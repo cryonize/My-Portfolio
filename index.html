@@ -1,0 +1,221 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>John Vincent Lot - Game Design & Project Management Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white font-sans">
+  <!-- Header -->
+  <header class="bg-indigo-600 py-6 text-center">
+    <h1 class="text-4xl font-bold">John Vincent Lot</h1>
+    <p class="text-lg mt-2">Game Designer & Project Manager</p>
+    <p class="text-sm mt-1">Taguig City, PH | johnvincentlot@gmail.com | (+63) 915-528-2385</p>
+  </header>
+
+  <!-- About Section -->
+  <section class="max-w-4xl mx-auto py-10 px-4">
+    <h2 class="text-3xl font-semibold mb-4">About Me</h2>
+    <p class="text-lg">
+      I’m John Vincent Lot, a game design and project management professional with over a decade of experience in the gaming industry. As Co-Founder and Chief Production Officer at Codebold Philippines Inc., I lead innovative game development projects, ensuring high-quality, unique experiences. My past roles at VALOFE Global Ltd. and Climate Guardians B.A. honed my skills in designing games like *Riders of Icarus* and *Climate Guardians Defenders*, managing teams, and driving strategic outcomes through KPI analysis. With a BS in Animation and Game Design from FEU Institute of Technology and a certification in Project Management, I bring a blend of creativity and operational expertise to every project.
+    </p>
+  </section>
+
+  <!-- Skills Section -->
+  <section class="bg-gray-800 py-10">
+    <div class="max-w-4xl mx-auto px-4">
+      <h2 class="text-3xl font-semibold mb-6">My Skills</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <h3 class="text-xl font-bold">Game Design</h3>
+          <ul class="list-disc list-inside">
+            <li>Game mechanics, balance, and economics</li>
+            <li>Prototyping in Unity and Godot</li>
+            <li>Game Design Document (GDD) creation</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold">Project Management</h3>
+          <ul class="list-disc list-inside">
+            <li>Agile/Scrum coordination (Jira, Trello)</li>
+            <li>Team leadership and milestone delivery</li>
+            <li>Strategic planning and KPI analysis</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold">Game Operations</h3>
+          <ul class="list-disc list-inside">
+            <li>KPI monitoring and reporting</li>
+            <li>Revenue modeling and forecasting</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold">Additional Skills</h3>
+          <ul class="list-disc list-inside">
+            <li>Recruiting and team building</li>
+            <li>Cross-functional team coordination</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Experience Section -->
+  <section class="max-w-4xl mx-auto py-10 px-4">
+    <h2 class="text-3xl font-semibold mb-6">Professional Experience</h2>
+    <div class="space-y-8">
+      <!-- Codebold Philippines Inc. -->
+      <div class="bg-gray-700 p-6 rounded-lg">
+        <h3 class="text-2xl font-bold">Co-Founder, Chief Production Officer & Lead Game Designer</h3>
+        <p class="text-sm text-gray-300 mb-2">Codebold Philippines Inc. | Makati City, PH | Mar. 2022 - Present</p>
+        <p>
+          Lead the game development department, overseeing production and design of an upcoming video game. Hired top talent in game design and built a team focused on delivering high-quality, unique gaming experiences. Coordinate cross-functional teams to ensure project milestones are met.
+        </p>
+        <div class="mt-4">
+          <h4 class="text-xl font-semibold">Confidential Project #1</h4>
+          <p class="text-sm text-gray-300 mb-2">Online Table-Top Game | Role: Game Design, Project Management | 2024</p>
+          <p>
+            Managed game design and project coordination for a digitized *Betrayal at House on the Hill*, delivering a prototype with dynamic matchmaking and PvE-to-PvP mechanics.
+          </p>
+        </div>
+        <div class="mt-4">
+          <h4 class="text-xl font-semibold">Confidential Project #2</h4>
+          <p class="text-sm text-gray-300 mb-2">Simulation-Adventure Game | Role: Game Design, Project Management | 2024</p>
+          <p>
+            Led game design and project management for a simulation-adventure game, delivering a prototype with farming, exploration, and turn-based combat.
+          </p>
+        </div>
+      </div>
+      <!-- Climate Guardians B.A. -->
+      <div class="bg-gray-700 p-6 rounded-lg">
+        <h3 class="text-2xl font-bold">Lead Game Designer & Product Manager</h3>
+        <p class="text-sm text-gray-300 mb-2">Climate Guardians B.A. | Taguig City, PH | Feb. 2022 - May 2023</p>
+        <p>
+          Directed the design of *Climate Guardians Defenders*, blending *Clash of Clans* and *Clash Royale* mechanics to focus on reclaiming Amazon lands. Authored the GDD and economics for *Climate Guardians Clicker*, a prequel. Led design, programming, and art teams to deliver a cohesive prototype.
+        </p>
+        <div class="mt-4">
+          <h4 class="text-xl font-semibold">Climate Guardians Defenders</h4>
+          <p class="text-sm text-gray-300 mb-2">Mobile Strategy Game | Role: Game Design, Project Management | 2022-2023</p>
+          <p>
+            Led game design and project management for a mobile strategy game, crafting the GDD and coordinating teams to deliver a prototype focused on reclaiming Amazon lands.
+          </p>
+        </div>
+      </div>
+      <!-- VALOFE Global Ltd. (Country Manager) -->
+      <div class="bg-gray-700 p-6 rounded-lg">
+        <h3 class="text-2xl font-bold">Country Manager & Lead Game Designer</h3>
+        <p class="text-sm text-gray-300 mb-2">VALOFE Global Ltd. | Paig City, Metro Manila, PH | Apr. 2020 - Mar. 2022</p>
+        <p>
+          Managed multiple game projects, leading teams of up to 40 people. Analyzed KPI metrics to report to the CEO in Korea, ensuring strategic alignment and project success. Oversaw game design and operational strategies for global releases.
+        </p>
+        <div class="mt-4">
+          <h4 class="text-xl font-semibold">Riders of Icarus</h4>
+          <p class="text-sm text-gray-300 mb-2">MMORPG | Role: Live Ops, Game Support | 2019-2022</p>
+          <p>
+            Managed live operations and player support for a global MMORPG, releasing across Thailand, Russia, Indonesia, and Latin America. Improved player retention and revenue by 80%+ during COVID through effective support and KPI-driven events.
+          </p>
+        </div>
+      </div>
+      <!-- VALOFE Global Ltd. (Lead Game Designer) -->
+      <div class="bg-gray-700 p-6 rounded-lg">
+        <h3 class="text-2xl font-bold">Lead Game Designer</h3>
+        <p class="text-sm text-gray-300 mb-2">VALOFE Global Ltd. | Paig City, PH | Feb. 2019 - Apr. 2020</p>
+        <p>
+          Led game design for *Riders of Icarus*, overseeing releases across North America, South America, EU, and Russia. Focused on creating engaging mechanics and ensuring alignment with global market needs.
+        </p>
+      </div>
+      <!-- VALOFE Global Ltd. (Game Operations Lead) -->
+      <div class="bg-gray-700 p-6 rounded-lg">
+        <h3 class="text-2xl font-bold">Game Operations Lead</h3>
+        <p class="text-sm text-gray-300 mb-2">VALOFE Global Ltd. | Paig City, PH | Aug. 2015 - Feb. 2019</p>
+        <p>
+          Monitored, analyzed, and reported KPIs for live service games, coordinating a team of operators to engage with players and implement improvements based on feedback.
+        </p>
+        <div class="mt-4">
+          <h4 class="text-xl font-semibold">Combat Arms</h4>
+          <p class="text-sm text-gray-300 mb-2">FPS | Role: Live Ops, Game Support | 2018-2022</p>
+          <p>
+            Oversaw live operations and player support for a global FPS. Managed account migrations and Steam porting, ensuring a seamless publisher transition and consistent player support.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Education & Certifications Section -->
+  <section class="bg-gray-800 py-10">
+    <div class="max-w-4xl mx-auto px-4">
+      <h2 class="text-3xl font-semibold mb-6">Education & Certifications</h2>
+      <div class="space-y-4">
+        <div>
+          <h3 class="text-xl font-bold">BS in Information Technology (Animation and Game Design)</h3>
+          <p class="text-sm text-gray-300">FEU Institute of Technology | Manila, PH | May 2015</p>
+          <p>
+            Developed *Gunjutsu*, a third-person shooter featuring ninjas, guns, and robots. Completed over 1,000 hours of internship at Anino Games/Anino Playlab, the pioneer game development studio in the Philippines.
+          </p>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold">Certifications</h3>
+          <ul class="list-disc list-inside">
+            <li>Foundations of Project Management, Coursera</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="max-w-4xl mx-auto py-10 px-4 text-center">
+    <h2 class="text-3xl font-semibold mb-6">Get in Touch</h2>
+    <p class="text-lg mb-4">
+      I’m ready to bring my expertise in game design and project management to your next project. Let’s collaborate to create something exceptional!
+    </p>
+    <a href="mailto:johnvincentlot@gmail.com" class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700">Contact Me</a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 py-4 text-center text-gray-400">
+    <p>© 2025 John Vincent Lot. All rights reserved.</p>
+  </footer>
+</body>
+</html>
