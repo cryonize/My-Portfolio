@@ -1,220 +1,222 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>John Vincent Lot - Game Design & Project Management Portfolio</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>John Vincent Lot – Portfolio</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-900 text-white font-sans">
+<body class="bg-gray-950 text-gray-100 font-sans">
   <!-- Header -->
-  <header class="bg-indigo-600 py-6 text-center">
-    <h1 class="text-4xl font-bold">John Vincent Lot</h1>
-    <p class="text-lg mt-2">Game Designer & Project Manager</p>
-    <p class="text-sm mt-1">Taguig City, PH | johnvincentlot@gmail.com | (+63) 915-528-2385</p>
+  <header class="bg-indigo-800 py-8 text-center shadow-lg">
+    <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight">John Vincent Lot</h1>
+    <div class="flex flex-col md:flex-row gap-2 items-center justify-center mt-2 text-base text-indigo-100">
+      <span>Taguig City, PH</span>
+      <span class="hidden md:inline">|</span>
+      <span>johnvincentlot@gmail.com</span>
+      <span class="hidden md:inline">|</span>
+      <span>(+63) 915-528-2385</span>
+    </div>
+    <a href="https://cryonize.github.io/My-Portfolio/" target="_blank" class="mt-2 inline-block text-indigo-200 hover:text-white underline text-sm">Portfolio Website</a>
   </header>
 
-  <!-- About Section -->
-  <section class="max-w-4xl mx-auto py-10 px-4">
-    <h2 class="text-3xl font-semibold mb-4">About Me</h2>
-    <p class="text-lg">
-      I’m John Vincent Lot, a game design and project management professional with over a decade of experience in the gaming industry. As Co-Founder and Chief Production Officer at Codebold Philippines Inc., I lead innovative game development projects, ensuring high-quality, unique experiences. My past roles at VALOFE Global Ltd. and Climate Guardians B.A. honed my skills in designing games like *Riders of Icarus* and *Climate Guardians Defenders*, managing teams, and driving strategic outcomes through KPI analysis. With a BS in Animation and Game Design from FEU Institute of Technology and a certification in Project Management, I bring a blend of creativity and operational expertise to every project.
-    </p>
-  </section>
-
-  <!-- Skills Section -->
-  <section class="bg-gray-800 py-10">
-    <div class="max-w-4xl mx-auto px-4">
-      <h2 class="text-3xl font-semibold mb-6">My Skills</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <h3 class="text-xl font-bold">Game Design</h3>
-          <ul class="list-disc list-inside">
-            <li>Game mechanics, balance, and economics</li>
-            <li>Prototyping in Unity and Godot</li>
-            <li>Game Design Document (GDD) creation</li>
-          </ul>
-        </div>
-        <div>
-          <h3 class="text-xl font-bold">Project Management</h3>
-          <ul class="list-disc list-inside">
-            <li>Agile/Scrum coordination (Jira, Trello)</li>
-            <li>Team leadership and milestone delivery</li>
-            <li>Strategic planning and KPI analysis</li>
-          </ul>
-        </div>
-        <div>
-          <h3 class="text-xl font-bold">Game Operations</h3>
-          <ul class="list-disc list-inside">
-            <li>KPI monitoring and reporting</li>
-            <li>Revenue modeling and forecasting</li>
-          </ul>
-        </div>
-        <div>
-          <h3 class="text-xl font-bold">Additional Skills</h3>
-          <ul class="list-disc list-inside">
-            <li>Recruiting and team building</li>
-            <li>Cross-functional team coordination</li>
-          </ul>
-        </div>
+  <!-- About -->
+  <section class="max-w-3xl mx-auto mt-10 mb-8 px-6">
+    <div class="bg-gray-900 rounded-2xl p-8 shadow-md">
+      <h2 class="text-2xl font-bold mb-3 text-indigo-400">About Me</h2>
+      <p class="text-lg mb-3">
+        With 9+ years in game development, live operations, and cross-functional management, I’ve built my career on bridging creative vision and operational excellence. I’m a co-founder, producer, game designer, and people leader—comfortable leading teams through ambiguity, pivots, and pressure. 
+      </p>
+      <p class="text-base mb-2">
+        My approach blends creativity with structure. I focus on community-driven design, data, and rapid iteration, and I’m known for raising tough issues early—ensuring teams don’t just “move fast” but move in the right direction.
+      </p>
+      <ul class="mb-2 ml-5 list-disc text-indigo-200">
+        <li>Game and system design using Unity, Unreal, and Godot</li>
+        <li>Production planning, sprint management, and team leadership</li>
+        <li>KPI analysis, feedback loops, and live ops for online games</li>
+        <li>Tools: ClickUp, Jira, Trello, Google Workspace, Milanote</li>
+        <li>Strong stakeholder and publisher communications</li>
+      </ul>
+      <div class="text-sm text-gray-400 mt-4">
+        <span class="font-semibold text-indigo-300">Anecdote:</span>
+        <br>
+        During a critical pivot at Codebold, I steered my team from a tabletop-style game to a cozy co-op RPG—repurposing assets, aligning the vision, and helping secure investor interest. For me, solving complex problems means finding the right perspective—and getting buy-in around that vision.
       </div>
     </div>
   </section>
 
-  <!-- Experience Section -->
-  <section class="max-w-4xl mx-auto py-10 px-4">
-    <h2 class="text-3xl font-semibold mb-6">Professional Experience</h2>
+  <!-- Skills -->
+  <section class="bg-gray-950 py-10">
+    <div class="max-w-3xl mx-auto px-6">
+      <h2 class="text-2xl font-bold text-indigo-400 mb-6">Strengths & Core Skills</h2>
+      <div class="flex flex-wrap gap-2 mb-2">
+        <span class="bg-indigo-700 px-3 py-1 rounded-full text-sm">Game & System Design</span>
+        <span class="bg-indigo-700 px-3 py-1 rounded-full text-sm">Production & Team Leadership</span>
+        <span class="bg-indigo-700 px-3 py-1 rounded-full text-sm">LiveOps & KPI Analysis</span>
+        <span class="bg-indigo-700 px-3 py-1 rounded-full text-sm">Sprint Planning (Agile/Scrum)</span>
+        <span class="bg-indigo-700 px-3 py-1 rounded-full text-sm">Process Optimization</span>
+        <span class="bg-indigo-700 px-3 py-1 rounded-full text-sm">Stakeholder & Publisher Comms</span>
+        <span class="bg-indigo-700 px-3 py-1 rounded-full text-sm">ClickUp, Jira, Trello, Milanote</span>
+        <span class="bg-indigo-700 px-3 py-1 rounded-full text-sm">Community Engagement</span>
+        <span class="bg-indigo-700 px-3 py-1 rounded-full text-sm">Risk Management & Escalation</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section class="max-w-3xl mx-auto py-10 px-6">
+    <h2 class="text-2xl font-bold text-indigo-400 mb-6">Featured Projects</h2>
+    <div class="space-y-6">
+      <!-- Cozy Co-op Adventure RPG (Codebold) -->
+      <div class="bg-gray-900 rounded-xl p-6">
+        <h3 class="font-semibold text-lg text-indigo-200">Cozy Co-op Adventure RPG (Prototype) <span class="text-xs text-gray-400 ml-2">Unreal Engine, 2023–2024</span></h3>
+        <ul class="list-disc list-inside text-base mt-2">
+          <li>Role: Producer, Lead Game Designer</li>
+          <li>Led project pivot, repurposing existing code/art to build an investor-ready MVP focused on co-op farming, exploration, and adventure.</li>
+          <li>Created agile production workflows, user feedback loops, and investor pitch decks.</li>
+        </ul>
+      </div>
+      <!-- Digitized Tabletop Game (Codebold) -->
+      <div class="bg-gray-900 rounded-xl p-6">
+        <h3 class="font-semibold text-lg text-indigo-200">Digital Tabletop Game – “Betrayal-Inspired” <span class="text-xs text-gray-400 ml-2">Unity, 2023</span></h3>
+        <ul class="list-disc list-inside text-base mt-2">
+          <li>Role: Producer, Lead Game Designer</li>
+          <li>Directed a remote team to deliver a PvE/PvP tabletop-style prototype with dynamic matchmaking and modular systems.</li>
+          <li>Defined GDDs, core loops, and sprint processes; ran playtests and feature reviews.</li>
+        </ul>
+      </div>
+      <!-- Climate Guardians Defenders (Climate Guardians B.A.) -->
+      <div class="bg-gray-900 rounded-xl p-6">
+        <h3 class="font-semibold text-lg text-indigo-200">Climate Guardians Defenders <span class="text-xs text-gray-400 ml-2">Mobile, 2022–2023</span></h3>
+        <ul class="list-disc list-inside text-base mt-2">
+          <li>Role: Lead Game Designer, Product Manager</li>
+          <li>Led full design and production for an educational mobile strategy game funded by grants.</li>
+          <li>Blended Clash of Clans-style mechanics with environmental themes; authored GDDs and managed cross-team delivery.</li>
+        </ul>
+      </div>
+      <!-- Climate Guardians Clicker (Climate Guardians B.A.) -->
+      <div class="bg-gray-900 rounded-xl p-6">
+        <h3 class="font-semibold text-lg text-indigo-200">Climate Guardians Clicker <span class="text-xs text-gray-400 ml-2">Mobile, 2022</span></h3>
+        <ul class="list-disc list-inside text-base mt-2">
+          <li>Role: Lead Game Designer</li>
+          <li>Designed economy, upgrade, and reward systems for a clicker prequel to Defenders.</li>
+          <li>Coordinated developers, artists, and educational consultants.</li>
+        </ul>
+      </div>
+      <!-- Riders of Icarus (VALOFE) -->
+      <div class="bg-gray-900 rounded-xl p-6">
+        <h3 class="font-semibold text-lg text-indigo-200">Riders of Icarus <span class="text-xs text-gray-400 ml-2">PC MMORPG, Global, 2015–2022</span></h3>
+        <ul class="list-disc list-inside text-base mt-2">
+          <li>Role: Country Manager, Game Operations Lead, Live Ops</li>
+          <li>Led live operations, KPI tracking, and team coordination for global launches (NA, LATAM, SEA, EU).</li>
+          <li>Drove player retention events and coordinated support teams for 100k+ user base.</li>
+        </ul>
+      </div>
+      <!-- Combat Arms (VALOFE) -->
+      <div class="bg-gray-900 rounded-xl p-6">
+        <h3 class="font-semibold text-lg text-indigo-200">Combat Arms <span class="text-xs text-gray-400 ml-2">PC FPS, Global, 2015–2022</span></h3>
+        <ul class="list-disc list-inside text-base mt-2">
+          <li>Role: Game Operations Lead</li>
+          <li>Oversaw account migrations, Steam porting, live events, and support team management during publisher transitions.</li>
+        </ul>
+      </div>
+      <!-- Game of Dice & Angel Stone (VALOFE) -->
+      <div class="bg-gray-900 rounded-xl p-6">
+        <h3 class="font-semibold text-lg text-indigo-200">Game of Dice & Angel Stone <span class="text-xs text-gray-400 ml-2">Mobile, Support/QA</span></h3>
+        <ul class="list-disc list-inside text-base mt-2">
+          <li>Role: Game Operations & QA Specialist</li>
+          <li>Managed bug reports, QA cycles, and Steam integration for multiple titles.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Experience -->
+  <section class="max-w-3xl mx-auto py-10 px-6">
+    <h2 class="text-2xl font-bold text-indigo-400 mb-8">Professional Experience</h2>
     <div class="space-y-8">
-      <!-- Codebold Philippines Inc. -->
-      <div class="bg-gray-700 p-6 rounded-lg">
-        <h3 class="text-2xl font-bold">Co-Founder, Chief Production Officer & Lead Game Designer</h3>
-        <p class="text-sm text-gray-300 mb-2">Codebold Philippines Inc. | Makati City, PH | Mar. 2022 - Present</p>
-        <p>
-          Lead the game development department, overseeing production and design of an upcoming video game. Hired top talent in game design and built a team focused on delivering high-quality, unique gaming experiences. Coordinate cross-functional teams to ensure project milestones are met.
-        </p>
-        <div class="mt-4">
-          <h4 class="text-xl font-semibold">Confidential Project #1</h4>
-          <p class="text-sm text-gray-300 mb-2">Online Table-Top Game | Role: Game Design, Project Management | 2024</p>
-          <p>
-            Managed game design and project coordination for a digitized *Betrayal at House on the Hill*, delivering a prototype with dynamic matchmaking and PvE-to-PvP mechanics.
-          </p>
+      <div class="bg-gray-900 p-6 rounded-xl shadow-sm">
+        <div class="flex flex-col md:flex-row md:justify-between">
+          <div>
+            <h3 class="text-xl font-semibold text-indigo-300">Co-Founder, Chief Production Officer & Lead Game Designer</h3>
+            <span class="block text-sm text-gray-400">Codebold Philippines Inc. | Makati City, PH | Mar 2022 – Present</span>
+          </div>
         </div>
-        <div class="mt-4">
-          <h4 class="text-xl font-semibold">Confidential Project #2</h4>
-          <p class="text-sm text-gray-300 mb-2">Simulation-Adventure Game | Role: Game Design, Project Management | 2024</p>
-          <p>
-            Led game design and project management for a simulation-adventure game, delivering a prototype with farming, exploration, and turn-based combat.
-          </p>
+        <ul class="list-disc list-inside mt-3 text-base">
+          <li>Built, scaled, and led game development and operations teams from scratch for investor-ready MVPs.</li>
+          <li>Drove strategic pivots, resource alignment, and internal process design to meet market and investor goals.</li>
+          <li>Created agile production pipelines (ClickUp/Jira), established feedback loops, and set team OKRs.</li>
+          <li>Served as both producer and game designer—leading team retros, project reporting, and stakeholder comms.</li>
+        </ul>
+        <div class="mt-3 pl-4 border-l-4 border-indigo-500 text-sm text-gray-300">
+          <strong>Key Projects:</strong> Cozy Co-op Adventure RPG, Digital Tabletop Game (Betrayal-inspired)
         </div>
       </div>
-      <!-- Climate Guardians B.A. -->
-      <div class="bg-gray-700 p-6 rounded-lg">
-        <h3 class="text-2xl font-bold">Lead Game Designer & Product Manager</h3>
-        <p class="text-sm text-gray-300 mb-2">Climate Guardians B.A. | Taguig City, PH | Feb. 2022 - May 2023</p>
-        <p>
-          Directed the design of *Climate Guardians Defenders*, blending *Clash of Clans* and *Clash Royale* mechanics to focus on reclaiming Amazon lands. Authored the GDD and economics for *Climate Guardians Clicker*, a prequel. Led design, programming, and art teams to deliver a cohesive prototype.
-        </p>
-        <div class="mt-4">
-          <h4 class="text-xl font-semibold">Climate Guardians Defenders</h4>
-          <p class="text-sm text-gray-300 mb-2">Mobile Strategy Game | Role: Game Design, Project Management | 2022-2023</p>
-          <p>
-            Led game design and project management for a mobile strategy game, crafting the GDD and coordinating teams to deliver a prototype focused on reclaiming Amazon lands.
-          </p>
+      <div class="bg-gray-900 p-6 rounded-xl shadow-sm">
+        <div class="flex flex-col md:flex-row md:justify-between">
+          <div>
+            <h3 class="text-xl font-semibold text-indigo-300">Lead Game Designer & Product Manager</h3>
+            <span class="block text-sm text-gray-400">Climate Guardians B.A. | Remote/Taguig City | Feb 2022 – May 2023</span>
+          </div>
+        </div>
+        <ul class="list-disc list-inside mt-3 text-base">
+          <li>Led design, GDD creation, and sprint planning for two eco-themed mobile games.</li>
+          <li>Coordinated across programming, art, and business stakeholders to ensure quality and momentum.</li>
+          <li>Drove feature documentation, user flows, and feedback loops to align production with grant and investor deliverables.</li>
+        </ul>
+        <div class="mt-3 pl-4 border-l-4 border-indigo-500 text-sm text-gray-300">
+          <strong>Key Projects:</strong> Climate Guardians Defenders, Climate Guardians Clicker
         </div>
       </div>
-      <!-- VALOFE Global Ltd. (Country Manager) -->
-      <div class="bg-gray-700 p-6 rounded-lg">
-        <h3 class="text-2xl font-bold">Country Manager & Lead Game Designer</h3>
-        <p class="text-sm text-gray-300 mb-2">VALOFE Global Ltd. | Paig City, Metro Manila, PH | Apr. 2020 - Mar. 2022</p>
-        <p>
-          Managed multiple game projects, leading teams of up to 40 people. Analyzed KPI metrics to report to the CEO in Korea, ensuring strategic alignment and project success. Oversaw game design and operational strategies for global releases.
-        </p>
-        <div class="mt-4">
-          <h4 class="text-xl font-semibold">Riders of Icarus</h4>
-          <p class="text-sm text-gray-300 mb-2">MMORPG | Role: Live Ops, Game Support | 2019-2022</p>
-          <p>
-            Managed live operations and player support for a global MMORPG, releasing across Thailand, Russia, Indonesia, and Latin America. Improved player retention and revenue by 80%+ during COVID through effective support and KPI-driven events.
-          </p>
+      <div class="bg-gray-900 p-6 rounded-xl shadow-sm">
+        <div class="flex flex-col md:flex-row md:justify-between">
+          <div>
+            <h3 class="text-xl font-semibold text-indigo-300">Country Manager & Game Operations Lead</h3>
+            <span class="block text-sm text-gray-400">VALOFE Global Ltd. | Pasig City, PH | Aug 2015 – Mar 2022</span>
+          </div>
         </div>
-      </div>
-      <!-- VALOFE Global Ltd. (Lead Game Designer) -->
-      <div class="bg-gray-700 p-6 rounded-lg">
-        <h3 class="text-2xl font-bold">Lead Game Designer</h3>
-        <p class="text-sm text-gray-300 mb-2">VALOFE Global Ltd. | Paig City, PH | Feb. 2019 - Apr. 2020</p>
-        <p>
-          Led game design for *Riders of Icarus*, overseeing releases across North America, South America, EU, and Russia. Focused on creating engaging mechanics and ensuring alignment with global market needs.
-        </p>
-      </div>
-      <!-- VALOFE Global Ltd. (Game Operations Lead) -->
-      <div class="bg-gray-700 p-6 rounded-lg">
-        <h3 class="text-2xl font-bold">Game Operations Lead</h3>
-        <p class="text-sm text-gray-300 mb-2">VALOFE Global Ltd. | Paig City, PH | Aug. 2015 - Feb. 2019</p>
-        <p>
-          Monitored, analyzed, and reported KPIs for live service games, coordinating a team of operators to engage with players and implement improvements based on feedback.
-        </p>
-        <div class="mt-4">
-          <h4 class="text-xl font-semibold">Combat Arms</h4>
-          <p class="text-sm text-gray-300 mb-2">FPS | Role: Live Ops, Game Support | 2018-2022</p>
-          <p>
-            Oversaw live operations and player support for a global FPS. Managed account migrations and Steam porting, ensuring a seamless publisher transition and consistent player support.
-          </p>
+        <ul class="list-disc list-inside mt-3 text-base">
+          <li>Managed live service operations, support, and QA for MMORPGs and F2P titles (Riders of Icarus, Combat Arms) with 100k+ users globally.</li>
+          <li>Owned KPI analysis, team hiring/training, and escalation management for 25–40 staff across regions.</li>
+          <li>Collaborated with publishing, dev, and product teams to deliver live ops events, system updates, and community campaigns.</li>
+          <li>Reported directly to Korean HQ; led operational improvements and customer success initiatives.</li>
+        </ul>
+        <div class="mt-3 pl-4 border-l-4 border-indigo-500 text-sm text-gray-300">
+          <strong>Key Projects:</strong> Riders of Icarus, Combat Arms, Game of Dice, Angel Stone
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Education & Certifications Section -->
-  <section class="bg-gray-800 py-10">
-    <div class="max-w-4xl mx-auto px-4">
-      <h2 class="text-3xl font-semibold mb-6">Education & Certifications</h2>
-      <div class="space-y-4">
-        <div>
-          <h3 class="text-xl font-bold">BS in Information Technology (Animation and Game Design)</h3>
-          <p class="text-sm text-gray-300">FEU Institute of Technology | Manila, PH | May 2015</p>
-          <p>
-            Developed *Gunjutsu*, a third-person shooter featuring ninjas, guns, and robots. Completed over 1,000 hours of internship at Anino Games/Anino Playlab, the pioneer game development studio in the Philippines.
-          </p>
-        </div>
-        <div>
-          <h3 class="text-xl font-bold">Certifications</h3>
-          <ul class="list-disc list-inside">
-            <li>Foundations of Project Management, Coursera</li>
-          </ul>
-        </div>
+  <!-- Education & Certifications -->
+  <section class="bg-gray-950 py-10">
+    <div class="max-w-3xl mx-auto px-6">
+      <h2 class="text-2xl font-bold text-indigo-400 mb-6">Education & Certifications</h2>
+      <div class="bg-gray-900 rounded-xl p-6 mb-4">
+        <h3 class="font-semibold">BS, Information Technology (Animation & Game Design)</h3>
+        <span class="text-gray-400 text-sm">FEU Institute of Technology | Manila, PH | May 2015</span>
+      </div>
+      <div class="bg-gray-900 rounded-xl p-6">
+        <h3 class="font-semibold">Certifications</h3>
+        <ul class="list-disc list-inside">
+          <li>Foundations of Project Management, Coursera</li>
+          <li>Open to PMP or Scrum Master certifications</li>
+        </ul>
       </div>
     </div>
   </section>
 
-  <!-- Contact Section -->
-  <section class="max-w-4xl mx-auto py-10 px-4 text-center">
-    <h2 class="text-3xl font-semibold mb-6">Get in Touch</h2>
-    <p class="text-lg mb-4">
-      I’m ready to bring my expertise in game design and project management to your next project. Let’s collaborate to create something exceptional!
+  <!-- Contact -->
+  <section class="max-w-3xl mx-auto py-10 px-6 text-center">
+    <h2 class="text-2xl font-bold text-indigo-400 mb-3">Let’s Work Together</h2>
+    <p class="text-base mb-6">
+      I bring founder-level ownership, problem-solving, and team building to every project. Let’s connect and build something great.
     </p>
-    <a href="mailto:johnvincentlot@gmail.com" class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700">Contact Me</a>
+    <a href="mailto:johnvincentlot@gmail.com" class="inline-block bg-indigo-700 px-8 py-3 rounded-lg font-semibold text-white shadow-lg hover:bg-indigo-800 transition">Contact Me</a>
   </section>
 
   <!-- Footer -->
-  <footer class="bg-gray-900 py-4 text-center text-gray-400">
+  <footer class="bg-gray-950 py-4 text-center text-gray-500">
     <p>© 2025 John Vincent Lot. All rights reserved.</p>
   </footer>
 </body>
